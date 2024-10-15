@@ -4,7 +4,10 @@ const PORT = 8000;
 
 const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.end('<h1>Hello, World!</h1> <br/> <p>This is an initial server</p>');
+    res.end(JSON.stringify({
+        id: 1,
+        planet_name: 'Earth',
+    }));
 })
 
 server.listen(PORT, () => {

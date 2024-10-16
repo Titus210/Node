@@ -44,49 +44,68 @@ app.get('/', (req, res) => {
 
 // Route to add a new planet (POST)
 app.post('/planets', (req, res) => {
+    const { planet_name, distance_from_sun, diameter } = req.body; // Destructure request body
+
+    // Check for missing fields
+    const missingFields = [];
+    if (!planet_name) missingFields.push('planet_name');
+    if (!distance_from_sun) missingFields.push('distance_from_sun');
+    if (!diameter) missingFields.push('diameter');
+
+    // If any field is missing, respond with 400 status and error message
+    if (missingFields.length > 0) {
+        return res.status(400).json({
+            error: `Missing required fields: ${missingFields.join(', ')}`
+        });
+    }
+
+    // If all required fields are present, create the new planet
     const newPlanet = {
-        id: planets.length + 1, // Auto-increment ID
-        planet_name: req.body.planet_name,
-        distance_from_sun: req.body.distance_from_sun,
-        diameter: req.body.diameter,
+        id: planets.length + 1,
+        planet_name,
+        distance_from_sun,
+        diameter
     };
-    planets.push(newPlanet); // Add to the array
-    res.status(201).json(newPlanet); // Respond with created planet
+    // Respond with success message and the newly created planet
+    res.status(201).json({
+        message: "Planet created successfully",
+        planet: newPlanet
+    });
 });
 
-// Route to get all planets (GET)
-app.get('/planets', (req, res) => {
-    res.json(planets);
-});
+    // Route to get all planets (GET)
+    app.get('/planets', (req, res) => {
+        res.json(planets);
+    });
 
-// Route to get a planet by its ID (GET)
-app.get('/planets/:planetId', (req, res) => {
-    const planet_id = Number(req.params.planetId); // Convert ID to number
-    const planet = planets.find(p => p.id === planet_id); // Find planet by ID
+    // Route to get a planet by its ID (GET)
+    app.get('/planets/:planetId', (req, res) => {
+        const planet_id = Number(req.params.planetId); // Convert ID to number
+        const planet = planets.find(p => p.id === planet_id); // Find planet by ID
 
-    if (planet) {
-        res.status(200).json(planet); // If found, return planet data
-    } else {
-        res.status(404).json({ error: "Planet not found" }); // If not found, return 404
-    }
-});
+        if (planet) {
+            res.status(200).json(planet); // If found, return planet data
+        } else {
+            res.status(404).json({ error: "Planet not found" }); // If not found, return 404
+        }
+    });
 
-// Route to get a planet by its name (GET)
-app.get('/planet-by-name/:planetName', (req, res) => {
-    const planet_name = req.params.planetName.toLowerCase(); // Convert name to lowercase
-    const planet = planets.find(p => p.planet_name.toLowerCase() === planet_name); // Find planet by name
+    // Route to get a planet by its name (GET)
+    app.get('/planet-by-name/:planetName', (req, res) => {
+        const planet_name = req.params.planetName.toLowerCase(); // Convert name to lowercase
+        const planet = planets.find(p => p.planet_name.toLowerCase() === planet_name); // Find planet by name
 
-    if (planet) {
-        res.status(200).json({
-            planet_name: planet.planet_name,
-            distance_from_sun: planet.distance_from_sun,
-        }); // If found, return name and distance from sun
-    } else {
-        res.status(404).json({ error: "Planet not found" }); // If not found, return 404
-    }
-});
+        if (planet) {
+            res.status(200).json({
+                planet_name: planet.planet_name,
+                distance_from_sun: planet.distance_from_sun,
+            }); // If found, return name and distance from sun
+        } else {
+            res.status(404).json({ error: "Planet not found" }); // If not found, return 404
+        }
+    });
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+    // Start the server
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });

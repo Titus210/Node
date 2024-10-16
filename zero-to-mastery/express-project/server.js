@@ -11,7 +11,7 @@ app.set('views', path.join(__dirname, 'views'));
 const PORT = 8000;
 
 // Middleware to serve static files
-app.use('/home', express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // Middleware to parse JSON data from requests
 app.use(express.json());

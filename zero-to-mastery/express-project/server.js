@@ -26,12 +26,12 @@ const planets = [
 
 // Middleware to log request duration
 app.use((req, res, next) => {
-    const start = Date.now(); // Track the start time
-    res.on('finish', () => {  // Use 'finish' event to ensure response has been sent
+    const start = Date.now();
+    res.on('finish', () => {
         const delta = Date.now() - start;
         console.log(`${req.method} ${req.url} ${delta} ms`);
     });
-    next(); // Proceed to the next middleware/route handler
+    next();
 });
 
 // Default route
@@ -46,11 +46,27 @@ app.get('/planets', (req, res) => {
 
 // Route to get a specific planet by its ID
 app.get('/planets/:planetId', (req, res) => {
-    const planet_id = Number(req.params.planetId); // Convert ID to a number
-    const planet = planets.find(p => p.id === planet_id); // Find the planet by ID
+    const planet_id = Number(req.params.planetId); // Convert ID to number
+    const planet = planets.find(p => p.id === planet_id); // Find planet by ID
 
     if (planet) {
-        res.status(200).json(planet); // If found, return the planet data
+        res.status(200).json(planet); // If found, return planet data
+    } else {
+        res.status(404).json({ error: "Planet not found" }); // If not found, return 404
+    }
+});
+
+// Route to get a planet by its name
+app.get('/planet-by-name/:planetName', (req, res) => {
+    const planet_name = req.params.planetName.toLowerCase(); // Convert name to lowercase
+    const planet = planets.find(p => p.planet_name.toLowerCase() === planet_name); // Find planet by name
+
+    if (planet) {
+        res.status(200).json({
+            planet_name: planet.planet_name,
+            distance_from_sun: planet.distance_from_sun,
+        }); // If found, return planet name and distance from sun
+
     } else {
         res.status(404).json({ error: "Planet not found" }); // If not found, return 404
     }

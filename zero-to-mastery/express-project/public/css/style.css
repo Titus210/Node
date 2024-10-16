@@ -1,26 +1,26 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body{
+body {
     font-family: 'Roboto', sans-serif;
     background-color: #f5f5f5;
     width: 90%;
     margin: 0 auto;
-
-   
 }
 
-.image-container{
+.image-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 1rem;
     place-items: center;
-    background-color: fff;
+    background-color: #fff;
+    /* Corrected background-color with # */
 }
-.image-card{
+
+.image-card {
     position: relative;
     overflow: hidden;
     display: flex;
@@ -28,10 +28,26 @@ body{
     gap: 1rem;
     border-radius: 0.5rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
 }
 
-img{
+.image-card .image-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.image-card img {
     width: 100%;
-    
     object-fit: cover;
+    margin-bottom: 0.5rem;
+}
+
+/* Optional: Add a scrollbar style */
+.image-card .image-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.image-card .image-list::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
 }

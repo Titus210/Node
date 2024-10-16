@@ -1,3 +1,7 @@
+const path = require('path');
+const fs = require('fs');
+
+
 const planets = [
     { id: 1, planet_name: "Earth", distance_from_sun: "93 million miles", diameter: "7,917.5 miles" },
     { id: 2, planet_name: "Mars", distance_from_sun: "142 million miles", diameter: "4,212 miles" },
@@ -34,6 +38,27 @@ const getPlanetByName = (req, res) => {
     } else {
         res.status(404).json({ error: "Planet not found" });
     }
+};
+
+// Get planet image
+const getPlanetImage = (req, res) => {
+    const planet_name = req.params.planetName.toLowerCase(); // Extract planet name from the URL
+
+    const imagePath = path.join(__dirname, '..', 'public', 'images', `${planet_name}.jpg`);
+
+    // Check if the file exists
+    fs.access(imagePath, fs.constants.F_OK, (err) => {
+        if (err) {
+            return res.status(404).json({ error: `Image for planet "${planet_name}" not found` });
+        }
+
+          res.sendFile(imagePath, (err) => {
+            if (err) {
+                console.error("Error sending file:", err); // Log any errors during sendFile
+                res.status(500).json({ error: "Error sending the image file" });
+            }
+        });
+    });
 };
 
 // Add a new planet
@@ -84,5 +109,6 @@ module.exports = {
     getAllPlanets,
     getPlanetById,
     getPlanetByName,
-    addPlanet
+    addPlanet,
+    getPlanetImage
 };

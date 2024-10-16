@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/home/css/style.css" />
+</head>
+<body>
+    <h1>Planet Images</h1>
+    <div class="image-container">
+        {{#each planets}}
+            <div class="image-card">
+                <div class="image-list">
+                    {{#each this.planet_images}}
+                        <img src="{{this}}" alt="{{../planet_name}} is amazing" />
+                    {{/each}}
+                </div>
+                <p>{{planet_name}}</p>
+            </div>
+        {{/each}}
+    </div>
+
+    <script src="/home/js/main.js"></script>
+</body>
+</html>

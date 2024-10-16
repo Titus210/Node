@@ -1,12 +1,17 @@
 const express = require('express');
 const path = require('path');
-const app = express();
 const planetRoutes = require('./routes/planetRoutes'); // Import routes
+
+const { readPlanetsFromFile } = require('./controllers/planetsController');
+
+const app = express();
+app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, 'views'));
 
 const PORT = 8000;
 
 // Middleware to serve static files
-app.use('/home',express.static(path.join(__dirname,'public')))
+app.use('/home', express.static(path.join(__dirname, 'public')));
 
 // Middleware to parse JSON data from requests
 app.use(express.json());
@@ -21,13 +26,17 @@ app.use((req, res, next) => {
     next();
 });
 
-// Default route
-app.get('/', (req, res) => {
-    res.send('<h1>Welcome to the Planetary API</h1>');
-});
-
 // Use planet routes
 app.use('/planets', planetRoutes);
+
+// Route to render the planet images
+app.get('/home', (req, res) => {
+    const planets = readPlanetsFromFile(); // Read planets from the file
+    res.render('planets', {
+        title: 'Planetary API',
+        planets
+    });
+});
 
 // Start the server
 app.listen(PORT, () => {

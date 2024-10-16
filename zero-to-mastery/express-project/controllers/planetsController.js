@@ -43,6 +43,7 @@ const getPlanetByName = (req, res) => {
 // Get planet image
 const getPlanetImage = (req, res) => {
     const planet_name = req.params.planetName.toLowerCase(); // Extract planet name from the URL
+    console.log(`Received request for planet: ${planet_name}`); // Log the planet name
 
     const imagePath = path.join(__dirname, '..', 'public', 'images', `${planet_name}.jpg`);
 

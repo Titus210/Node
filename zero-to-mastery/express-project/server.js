@@ -1,24 +1,51 @@
 const express = require('express');
-
 const app = express();
 
 const PORT = 8000;
 
-app.get('/', (req,res)=>{
-    res.send({
+const planets = [
+    {
         id: 1,
-        name: "John Doe",
-    })
-})
+        planet_name: "Earth",
+        distance_from_sun: "93 million miles",
+        diameter: "7,917.5 miles",
+    },
+    {
+        id: 2,
+        planet_name: "Mars",
+        distance_from_sun: "142 million miles",
+        diameter: "4,212 miles",
+    },
+    {
+        id: 3,
+        planet_name: "Jupiter",
+        distance_from_sun: "484 million miles",
+        diameter: "86,881.4 miles",
+    }
+];
 
-app.get('/planets', (req,res)=>{
-    res.send("<ul><li>This is the first planet</li></ul>")
-})
+// Default route (optional)
+app.get('/', (req, res) => {
+    res.send('<h1>Welcome to the Planetary API</h1>');
+});
 
-app.post('/planets', (req,res)=>{
-   console.log("POST request updating planets")
-})
+// Route to get all planets
+app.get('/planets', (req, res) => {
+    res.json(planets);
+});
 
-app.listen(PORT, ()=>{
-    console.log(`Server is running on port ${PORT}`)
-})
+// Route to get a specific planet by its ID
+app.get('/planets/:planetId', (req, res) => {
+    const planet_id = Number(req.params.planetId); // Convert the ID to a number
+    const planet = planets.find(p => p.id === planet_id); // Find planet by ID
+
+    if (planet) {
+        res.status(200).json(planet); // If found, return the planet
+    } else {
+        res.status(404).json({ error: "Planet not found" }); // If not found, return 404
+    }
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});

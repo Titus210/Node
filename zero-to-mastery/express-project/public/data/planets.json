@@ -5,7 +5,7 @@
     "distance_from_sun": "93 million miles",
     "diameter": "7,917.5 miles",
     "planet_images": [
-      "/home/images/earth.jpg"
+      "/public/images/earth.jpg"
     ]
   },
   {
@@ -14,7 +14,7 @@
     "distance_from_sun": "142 million miles",
     "diameter": "4,212 miles",
     "planet_images": [
-      "/home/images/earth.jpg"
+      "/public/images/earth.jpg"
     ]
   },
   {
@@ -23,7 +23,7 @@
     "distance_from_sun": "484 million miles",
     "diameter": "86,881.4 miles",
     "planet_images": [
-      "/home/images/earth.jpg"
+      "/public/images/earth.jpg"
     ]
   },
   {
@@ -32,8 +32,8 @@
     "distance_from_sun": "890 million miles",
     "diameter": "72,366 miles",
     "planet_images": [
-      "/home/images/earth.jpg",
-      "/home/images/earth.jpg"
+      "/public/images/earth.jpg",
+      "/public/images/earth.jpg"
     ]
   },
   {
@@ -42,7 +42,7 @@
     "distance_from_sun": "13 million miles",
     "diameter": "7,917.5 miles",
     "planet_images": [
-      "/home/images/earth.jpg"
+      "/public/images/earth.jpg"
     ]
   }
 ]

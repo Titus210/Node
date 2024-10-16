@@ -1,8 +1,12 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 const planetRoutes = require('./routes/planetRoutes'); // Import routes
 
 const PORT = 8000;
+
+// Middleware to serve static files
+app.use('/home',express.static(path.join(__dirname,'public')))
 
 // Middleware to parse JSON data from requests
 app.use(express.json());

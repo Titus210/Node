@@ -24,14 +24,17 @@ const planets = [
     }
 ];
 
+// Middleware to parse JSON data from requests
+app.use(express.json());
+
 // Middleware to log request duration
 app.use((req, res, next) => {
-    const start = Date.now();
-    res.on('finish', () => {
+    const start = Date.now(); // Track start time
+    res.on('finish', () => {  // Execute when response is sent
         const delta = Date.now() - start;
         console.log(`${req.method} ${req.url} ${delta} ms`);
     });
-    next();
+    next(); // Proceed to next middleware or route
 });
 
 // Default route
@@ -39,12 +42,24 @@ app.get('/', (req, res) => {
     res.send('<h1>Welcome to the Planetary API</h1>');
 });
 
-// Route to get all planets
+// Route to add a new planet (POST)
+app.post('/planets', (req, res) => {
+    const newPlanet = {
+        id: planets.length + 1, // Auto-increment ID
+        planet_name: req.body.planet_name,
+        distance_from_sun: req.body.distance_from_sun,
+        diameter: req.body.diameter,
+    };
+    planets.push(newPlanet); // Add to the array
+    res.status(201).json(newPlanet); // Respond with created planet
+});
+
+// Route to get all planets (GET)
 app.get('/planets', (req, res) => {
     res.json(planets);
 });
 
-// Route to get a specific planet by its ID
+// Route to get a planet by its ID (GET)
 app.get('/planets/:planetId', (req, res) => {
     const planet_id = Number(req.params.planetId); // Convert ID to number
     const planet = planets.find(p => p.id === planet_id); // Find planet by ID
@@ -56,7 +71,7 @@ app.get('/planets/:planetId', (req, res) => {
     }
 });
 
-// Route to get a planet by its name
+// Route to get a planet by its name (GET)
 app.get('/planet-by-name/:planetName', (req, res) => {
     const planet_name = req.params.planetName.toLowerCase(); // Convert name to lowercase
     const planet = planets.find(p => p.planet_name.toLowerCase() === planet_name); // Find planet by name
@@ -65,8 +80,7 @@ app.get('/planet-by-name/:planetName', (req, res) => {
         res.status(200).json({
             planet_name: planet.planet_name,
             distance_from_sun: planet.distance_from_sun,
-        }); // If found, return planet name and distance from sun
-
+        }); // If found, return name and distance from sun
     } else {
         res.status(404).json({ error: "Planet not found" }); // If not found, return 404
     }
